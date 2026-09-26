@@ -1,0 +1,19 @@
+{
+  "name": "reanty-local",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "devDependencies": {
+    "@fontsource/poppins": "^5.2.8",
+    "vite": "^8.3.1"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/nunito": "^5.3.0"
+  }
+}

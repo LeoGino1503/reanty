@@ -1,0 +1,131 @@
+"""Editable first-run content. Media slots stay empty until an upload is assigned."""
+
+DEFAULT_SITE = {
+    "branding": {
+        "name": "Reanty.",
+        "tagline": "With over 1 million homes for sale available on the website.",
+    },
+    "contact": {
+        "email": "Info@webmail.com",
+        "phone": "(123) 456-7890",
+        "address": "547 ns tower St. anglo City, USA",
+        "head_office": "Xilliams Corner Wine © 2017. 1112 A Market St # Ste B22, Charlottesville, CA 45565",
+        "linkedin": "",
+        "facebook": "",
+        "twitter": "",
+        "instagram": "",
+        "youtube": "",
+        "pinterest": "",
+    },
+    "hero": {
+        "title": "Find the best Real Estate on your country .",
+        "description": "With over 1 million homes for sale available on the website, Renting can match you with a house.",
+        "button": "Start membership",
+        "revenue": "$7454.21",
+        "media_id": "",
+        "thumbnail_media_ids": ["", "", ""],
+        "thumbnail_prices": ["", "", ""],
+    },
+    "guides": {
+        "title": "Commercial Real Estate And Office",
+        "description": "Work with Renting brokers who help you to get started with smart tools to.",
+        "items": [
+            {"icon": "guide-buyer", "title": "Buyer Guides", "description": "Nurture valuable leads into customers, and turn one time."},
+            {"icon": "guide-renter", "title": "Renter Guides", "description": "Build brand awareness on the top social media networks."},
+            {"icon": "guide-seller", "title": "Seller Guides", "description": "Get professionally-written content that attracts qualified."},
+        ],
+    },
+    "about": {
+        "title": "Dream Living Spaces Setting New Build",
+        "description": "SeaWire Web is a wireframe kit that has more than 15\npopular categories and more than 200 screens",
+        "media_id": "",
+        "features": [
+            {"icon": "dream-residency", "title": "The perfect Rsidencye", "description": "Take a deep dive and browse origin\nneighborhood photos."},
+            {"icon": "dream-global", "title": "Global Arhitect Experts", "description": "Take a deep dive and browse origin\nneighborhood photos."},
+            {"icon": "dream-built-in", "title": "Built-in a storage capable", "description": "Take a deep dive and browse origin\nneighborhood photos."},
+        ],
+    },
+    "today": {
+        "title": "Today Sells Properties",
+        "description": "SeaWire Web is a wireframe kit that has more than 15 popular categories and more than 200 screens",
+        "items": [
+            "Live Music concert at Newyork",
+            "Our best boat Tour is just for you",
+            "Live Music concert at Newyork",
+            "Our best boat Tour is just for you",
+            "Live Music concert at Newyork",
+        ],
+        "media_ids": ["", "", ""],
+        "thumbnail_media_ids": ["", "", ""],
+        "thumbnail_prices": ["", "", ""],
+    },
+    "services": {
+        "title": "Services provide for you",
+        "description": "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.",
+        "items": [
+            {"icon": "service-bedrooms", "title": "Bed Rooms", "description": "Desktop publishing software like aldus page maker including"},
+            {"icon": "service-swimmingpool", "title": "Swimming pool", "description": "React creative agency amet, consec tetur adipiscing elit."},
+            {"icon": "service-copywriting", "title": "Copywriting content", "description": "The standard chunk of used since the 1500s is reproduced"},
+            {"icon": "service-smarthome", "title": "Smart Home", "description": "The standard chunk of used since the 1500s is reproduced"},
+            {"icon": "service-library", "title": "Libarary area", "description": "Desktop publishing software like aldus page maker including"},
+            {"icon": "service-responsive", "title": "Responsive Duity", "description": "React creative agency amet, consec tetur adipiscing elit."},
+        ],
+    },
+    "properties": {
+        "title": "Featured Property",
+        "description": "Find your suitable house here and stay safe and relaxe with pleasure",
+        "items": [
+            {"category": "Appartment", "title": "The Stokes Appartment", "location": "Cleveland, United States", "price": "$2,32,120", "media_id": ""},
+            {"category": "Vila", "title": "The Stokes Appartment", "location": "Cleveland, United States", "price": "$2,32,120", "media_id": ""},
+            {"category": "Land", "title": "The Stokes Appartment", "location": "Cleveland, United States", "price": "$2,32,120", "media_id": ""},
+        ],
+    },
+    "showcase": {
+        "media_id": "",
+        "thumbnail_media_id": "",
+        "price": "$4,000",
+        "address": "242 Metric way",
+        "beds": "2",
+        "baths": "2",
+        "area": "500sqf",
+        "unit": "9A",
+    },
+    "testimonial": {
+        "title": "What our customers are saying",
+        "description": "We make sure you have a fine distance with the sickness. We make you never lose hope.",
+        "quote": "We make sure you have a fine distance with the sickness. We make you never lose hope. We make sure you have with the sickness.",
+        "name": "Yunus Seyhan",
+        "role": "Postgraduate Student",
+        "media_id": "",
+    },
+    "projects": {
+        "title": "We build more projects successful",
+        "items": [
+            {"city": "San Francisco, California", "media_id": ""},
+            {"city": "Washington DC", "media_id": ""},
+            {"city": "Chicago", "media_id": ""},
+        ],
+    },
+    "blog": {
+        "title": "From our blog",
+        "description": "Find your suitable house here and stay safe and relaxe with pleasure",
+        "items": [
+            {"title": "How to rent a home very easily?", "category": "Rentals", "excerpt": "How to rent a home very easily in this pandemic situation. You can rent house through using our platfrom...", "date": "3 years ago", "author": "Mike Hesson", "media_id": ""},
+            {"title": "How to rent a home very easily?", "category": "Rentals", "excerpt": "How to rent a home very easily in this pandemic situation. You can rent house through using our platfrom...", "date": "3 years ago", "author": "Mike Hesson", "media_id": ""},
+            {"title": "How to rent a home very easily?", "category": "Rentals", "excerpt": "How to rent a home very easily in this pandemic situation. You can rent house through using our platfrom...", "date": "3 years ago", "author": "Mike Hesson", "media_id": ""},
+        ],
+    },
+    "contact_section": {
+        "eyebrow": "Contact with us",
+        "title": "Looking For To Buy A Property?",
+        "description": "Browse our property listing and find your best and suitable home or house for sale, rent and buying. It’s so easy and fast.",
+        "bullets": ["Archit ecto beatae vitae dicta sunt", "Largest global RealEstate market", "Nor again is there anyone"],
+        "media_id": "",
+    },
+    "footer": {
+        "copyright": "© 2021 Aeyman Megha All rights reserved",
+        "company_links": ["About", "Careers", "Mobile", "Blog", "How we work?"],
+        "contact_links": ["Help/FAQ", "Press", "Affiliates", "Propert owners", "Partners"],
+        "more_links": ["Land fees", "Property", "Law tips", "Nadges", "Privacy"],
+    },
+}
