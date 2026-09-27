@@ -1,23 +1,30 @@
 import { defineConfig, loadEnv } from 'vite';
 
-function serveHomeAtRoot() {
-  const rewriteRoot = (req, _res, next) => {
+const PAGE_FILES = ['home.html', 'index.html', 'login.html', 'signup.html', 'coming-soon.html', 'admin.html'];
+
+function servePages() {
+  const names = new Set(PAGE_FILES.map(file => file.replace(/\.html$/, '')));
+  const rewrite = (req, _res, next) => {
     const url = req.url || '';
-    const path = url.split('?')[0];
+    const queryIndex = url.indexOf('?');
+    const path = queryIndex === -1 ? url : url.slice(0, queryIndex);
+    const query = queryIndex === -1 ? '' : url.slice(queryIndex);
     if (path === '/' || path === '') {
-      const query = url.includes('?') ? url.slice(url.indexOf('?')) : '';
-      req.url = `/home.html${query}`;
+      req.url = `/pages/home.html${query}`;
+    } else {
+      const match = path.match(/^\/([a-z0-9-]+)\.html$/);
+      if (match && names.has(match[1])) req.url = `/pages/${match[1]}.html${query}`;
     }
     next();
   };
 
   return {
-    name: 'serve-home-at-root',
+    name: 'serve-pages',
     configureServer(server) {
-      server.middlewares.use(rewriteRoot);
+      server.middlewares.use(rewrite);
     },
     configurePreviewServer(server) {
-      server.middlewares.use(rewriteRoot);
+      server.middlewares.use(rewrite);
     },
   };
 }
@@ -26,10 +33,10 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
     base: './',
-    plugins: [serveHomeAtRoot()],
+    plugins: [servePages()],
     build: {
       rollupOptions: {
-        input: ['home.html', 'index.html', 'login.html', 'signup.html', 'coming-soon.html', 'admin.html'],
+        input: PAGE_FILES.map(file => `pages/${file}`),
       },
     },
     server: {
