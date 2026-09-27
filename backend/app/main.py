@@ -6,16 +6,19 @@ import os
 import re
 import uuid
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+from urllib.parse import urlsplit
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, File, Header, HTTPException, Request, UploadFile
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
 from minio import Minio
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 from pymongo import MongoClient, ReturnDocument
 from pymongo.errors import DuplicateKeyError
 from bson import ObjectId
@@ -29,6 +32,8 @@ MONGO_DB = os.getenv("MONGO_DB", "reanty")
 MINIO_BUCKET = os.getenv("MINIO_BUCKET", "reanty-media")
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_MB", "50")) * 1024 * 1024
 EMAIL_PATTERN = re.compile(r"^[^\s@]{1,128}@[^\s@]{1,255}\.[^\s@]{2,63}$")
+FORM_NAME_PATTERN = re.compile(r"^[a-z][a-z0-9-]{0,40}$")
+ALLOWED_ORIGINS = [x.strip() for x in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",") if x.strip()]
 
 
 def now() -> str:
@@ -67,7 +72,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Reanty Local API", version="1.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[x.strip() for x in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",") if x.strip()],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["Authorization", "Content-Type", "Range"],
 )
@@ -172,6 +177,42 @@ def clean_email(email: str) -> str:
     return email
 
 
+@dataclass
+class Submission:
+    data: dict[str, Any]
+    return_url: str | None = None
+
+
+async def read_submission(request: Request) -> Submission:
+    """Scripts post JSON; plain HTML forms post form fields and are redirected back to the page."""
+    if not request.headers.get("content-type", "").startswith(("application/x-www-form-urlencoded", "multipart/form-data")):
+        try:
+            data = await request.json()
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail="Invalid JSON body") from exc
+        return Submission(data if isinstance(data, dict) else {})
+    data = {key: value for key, value in (await request.form()).items() if isinstance(value, str)}
+    form_name = data.pop("return_to", "")
+    referer = urlsplit(request.headers.get("referer", ""))
+    if not FORM_NAME_PATTERN.fullmatch(form_name) or f"{referer.scheme}://{referer.netloc}" not in ALLOWED_ORIGINS:
+        return Submission(data)
+    return Submission(data, f"{referer._replace(fragment='').geturl()}#{form_name}")
+
+
+def complete_submission(submission: Submission, save: Callable[[], dict]):
+    try:
+        result = save()
+    except (ValidationError, HTTPException) as exc:
+        if submission.return_url:
+            return RedirectResponse(f"{submission.return_url}-error", status_code=303)
+        if isinstance(exc, ValidationError):
+            raise RequestValidationError(exc.errors(include_url=False)) from exc
+        raise
+    if submission.return_url:
+        return RedirectResponse(f"{submission.return_url}-done", status_code=303)
+    return result
+
+
 @app.get("/api/health")
 def health(db=Depends(database)):
     db.command("ping")
@@ -205,21 +246,27 @@ def update_site(payload: SiteUpdate, db=Depends(database)):
 
 
 @app.post("/api/contact", status_code=201)
-def submit_contact(payload: ContactMessage, db=Depends(database)):
-    db.contact_messages.insert_one({
-        "name": payload.name.strip(), "email": clean_email(payload.email),
-        "message": payload.message.strip(), "created_at": now(),
-    })
-    return {"message": "Message sent"}
+def submit_contact(submission: Submission = Depends(read_submission), db=Depends(database)):
+    def save():
+        payload = ContactMessage.model_validate(submission.data)
+        db.contact_messages.insert_one({
+            "name": payload.name.strip(), "email": clean_email(payload.email),
+            "message": payload.message.strip(), "created_at": now(),
+        })
+        return {"message": "Message sent"}
+    return complete_submission(submission, save)
 
 
 @app.post("/api/newsletter", status_code=201)
-def subscribe(payload: NewsletterEmail, db=Depends(database)):
-    try:
-        db.newsletter_subscriptions.insert_one({"email": clean_email(payload.email), "created_at": now()})
-    except DuplicateKeyError:
-        return {"message": "Email already subscribed"}
-    return {"message": "Subscribed"}
+def subscribe(submission: Submission = Depends(read_submission), db=Depends(database)):
+    def save():
+        payload = NewsletterEmail.model_validate(submission.data)
+        try:
+            db.newsletter_subscriptions.insert_one({"email": clean_email(payload.email), "created_at": now()})
+        except DuplicateKeyError:
+            return {"message": "Email already subscribed"}
+        return {"message": "Subscribed"}
+    return complete_submission(submission, save)
 
 
 def public_record(doc: dict) -> dict:

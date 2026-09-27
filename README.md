@@ -1,6 +1,10 @@
 # Reanty Local
 
-A Reanty homepage built from 10 reference images: Vite with plain HTML/CSS/JavaScript, FastAPI, MongoDB and MinIO. Sample content lives in `backend/app/defaults.py`; you can edit it through `/admin`. Image/video slots that have not been assigned keep an `<img>` tag pointing at `/media-not-yet-uploaded/...jpg` (an intentional 404) instead of a fixed grey block.
+A Reanty homepage built from 10 reference images, with a FastAPI + MongoDB + MinIO data server.
+
+The public pages — `index.html`, `login.html`, `signup.html` and `coming-soon.html` — are plain HTML and CSS with no JavaScript and relative paths only, so they also work when opened directly from disk. Styles live in `src/styles.css`; `src/interactions.css` provides the carousels, property filter, testimonial slider, mobile menu and dark mode using `:checked`, `:target` and `:has()`. Forms post straight to `./api/contact` and `./api/newsletter`; the API stores the data and redirects back to `#<form>-done` or `#<form>-error` on the same page.
+
+`admin.html` is a separate JavaScript panel (bundled by Vite) for reading contact messages and newsletter subscribers and editing the stored content.
 
 ## Requirements
 
@@ -42,7 +46,7 @@ On Windows CMD, copy the file with `copy .env.example .env` and activate Python 
 | `ADMIN_TOKEN` | Bearer token for saving content, uploading media and reading messages |
 | `ALLOWED_ORIGINS` | Origins allowed to call the API directly |
 | `MAX_UPLOAD_MB` | Per-file size limit, 50 MB by default |
-| `VITE_API_BASE` | API URL used by the browser, `/api` by default |
+| `VITE_API_BASE` | API URL used by the browser, relative `./api` by default |
 | `VITE_PROXY_TARGET` | Vite proxy target for `npm run dev`, `http://127.0.0.1:8000` by default |
 
 Vite reads `VITE_` variables from `.env` at startup/build time. When the frontend and API are deployed on separate domains, set `VITE_API_BASE` to the full API URL and rebuild, and add the frontend domain to `ALLOWED_ORIGINS`. On a single domain, reverse-proxy `/api` to FastAPI.

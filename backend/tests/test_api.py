@@ -59,6 +59,18 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(self.client.post('/api/newsletter', json={'email': 'a@example.com'}).status_code, 201)
         self.assertEqual(len(self.client.get('/api/admin/subscribers', headers=self.auth).json()), 1)
 
+    def test_html_forms_redirect_back_to_the_page(self):
+        page = {'Referer': 'http://localhost:5173/index.html#earlier'}
+        sent = self.client.post('/api/contact', data={'name': 'Gino Leo', 'email': 'gino@example.com', 'message': 'Need a house', 'return_to': 'contact-form'}, headers=page, follow_redirects=False)
+        self.assertEqual(sent.status_code, 303)
+        self.assertEqual(sent.headers['location'], 'http://localhost:5173/index.html#contact-form-done')
+        self.assertEqual(len(self.client.get('/api/admin/messages', headers=self.auth).json()), 1)
+        bad = self.client.post('/api/newsletter', data={'email': 'not-an-email', 'return_to': 'subscribe'}, headers=page, follow_redirects=False)
+        self.assertEqual(bad.headers['location'], 'http://localhost:5173/index.html#subscribe-error')
+        foreign = self.client.post('/api/newsletter', data={'email': 'b@example.com', 'return_to': 'subscribe'}, headers={'Referer': 'https://elsewhere.example/'}, follow_redirects=False)
+        self.assertEqual(foreign.status_code, 201)
+        self.assertEqual(self.client.post('/api/contact', json={'name': 'G'}).status_code, 422)
+
     def test_media_upload_assign_stream_and_delete(self):
         png = b'\x89PNG\r\n\x1a\n' + b'example-image-bytes'
         uploaded = self.client.post('/api/admin/media', headers=self.auth, files={'file': ('home.png', png, 'image/png')})

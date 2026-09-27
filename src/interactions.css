@@ -1,0 +1,342 @@
+/* State for the static pages: every interaction is driven by :checked, :target or :has(). */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Mobile menu: #menu is a fixed anchor so opening it never scrolls; following any nav link closes it. */
+.menu-anchor {
+  position: fixed;
+  top: 0;
+}
+.menu-toggle {
+  line-height: 1;
+}
+.menu-close {
+  display: none;
+}
+@media (max-width: 1050px) {
+  .menu-anchor:target ~ .menu-open {
+    display: none;
+  }
+  .menu-anchor:target ~ .menu-close {
+    display: block;
+    margin-left: auto;
+  }
+  .menu-anchor:target ~ .nav-links {
+    display: flex;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+}
+
+/* Dark mode toggle */
+.theme-toggle {
+  cursor: pointer;
+}
+.theme-switch:focus-visible ~ .theme-toggle {
+  outline: 2px solid #ff5945;
+  outline-offset: 3px;
+}
+
+/* Back to top appears after scrolling 280px where scroll-driven animations are supported. */
+@supports (animation-timeline: scroll()) {
+  .back-to-top {
+    animation: back-to-top-reveal linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 280px;
+  }
+  @keyframes back-to-top-reveal {
+    from {
+      opacity: 0;
+      visibility: hidden;
+    }
+    to {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+/* About section slides in on scroll; without support it stays visible. */
+.reveal-left,
+.reveal-right {
+  opacity: 1;
+  transform: none;
+}
+@supports (animation-timeline: view()) {
+  .reveal-left,
+  .reveal-right {
+    animation: reveal-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  .reveal-left {
+    --reveal-from: -120px;
+  }
+  .reveal-right {
+    --reveal-from: 120px;
+  }
+  @keyframes reveal-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--reveal-from));
+    }
+  }
+}
+
+/* House carousels (hero and "Today Sells"): one radio per house. */
+.house-step label {
+  display: block;
+  height: 100%;
+  cursor: pointer;
+}
+.house-step img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slide-dots label {
+  color: #9aadb6;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.3s,
+    font-size 0.3s,
+    transform 0.3s;
+}
+.house-carousel:has(> input:nth-of-type(1):checked) .house-step > span:nth-child(1),
+.house-carousel:has(> input:nth-of-type(2):checked) .house-step > span:nth-child(2),
+.house-carousel:has(> input:nth-of-type(3):checked) .house-step > span:nth-child(3) {
+  height: 100%;
+}
+.house-carousel:has(> input:nth-of-type(1):checked) .house-step > span:nth-child(1)::after,
+.house-carousel:has(> input:nth-of-type(2):checked) .house-step > span:nth-child(2)::after,
+.house-carousel:has(> input:nth-of-type(3):checked) .house-step > span:nth-child(3)::after {
+  content: none;
+}
+.house-carousel:has(> input:nth-of-type(1):checked) .slide-line > i:nth-child(1),
+.house-carousel:has(> input:nth-of-type(2):checked) .slide-line > i:nth-child(2),
+.house-carousel:has(> input:nth-of-type(3):checked) .slide-line > i:nth-child(3) {
+  background: #ff5945;
+}
+.house-carousel:has(> input:nth-of-type(1):checked) .slide-dots > label:nth-of-type(1),
+.house-carousel:has(> input:nth-of-type(2):checked) .slide-dots > label:nth-of-type(2),
+.house-carousel:has(> input:nth-of-type(3):checked) .slide-dots > label:nth-of-type(3) {
+  color: #25383d;
+  font-size: 20px;
+  font-weight: 600;
+  transform: translateY(-1px);
+}
+.house-carousel:has(> input:focus-visible) .house-step {
+  outline: 2px solid #ff5945;
+  outline-offset: 4px;
+}
+
+/* "Today Sells": the house nearest the active one is the middle step. */
+.today .house-carousel:has(> input:nth-of-type(1):checked) .house-step > span:nth-child(2),
+.today .house-carousel:has(> input:nth-of-type(2):checked) .house-step > span:nth-child(1),
+.today .house-carousel:has(> input:nth-of-type(3):checked) .house-step > span:nth-child(2) {
+  height: 74%;
+}
+
+/* Hero image and revenue follow the selected house. */
+.hero-image img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.revenue-card strong {
+  display: none;
+}
+.hero:has(#hero-slide-1:checked) :is(.hero-image img:nth-child(1), .revenue-card strong:nth-of-type(1)),
+.hero:has(#hero-slide-2:checked) :is(.hero-image img:nth-child(2), .revenue-card strong:nth-of-type(2)),
+.hero:has(#hero-slide-3:checked) :is(.hero-image img:nth-child(3), .revenue-card strong:nth-of-type(3)) {
+  display: block;
+  opacity: 1;
+}
+
+/* Mosaic: the selected house takes the large tile, the next two follow. */
+.today-mosaic > .media-frame {
+  grid-column: 2;
+}
+.today:has(#today-slide-1:checked) .today-mosaic > :nth-child(1),
+.today:has(#today-slide-2:checked) .today-mosaic > :nth-child(2),
+.today:has(#today-slide-3:checked) .today-mosaic > :nth-child(3) {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.today:has(#today-slide-1:checked) .today-mosaic > :nth-child(2),
+.today:has(#today-slide-2:checked) .today-mosaic > :nth-child(3),
+.today:has(#today-slide-3:checked) .today-mosaic > :nth-child(1) {
+  grid-row: 1;
+}
+.today:has(#today-slide-1:checked) .today-mosaic > :nth-child(3),
+.today:has(#today-slide-2:checked) .today-mosaic > :nth-child(1),
+.today:has(#today-slide-3:checked) .today-mosaic > :nth-child(2) {
+  grid-row: 2;
+}
+
+/* Property category filter: nothing selected shows every listing. */
+.property-tabs label {
+  color: #7e929f;
+  font-family: Nunito, sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 100%;
+  border-bottom: 2px solid transparent;
+  padding: 5px 0;
+  cursor: pointer;
+}
+.property-tabs label:hover,
+.property-tabs input:checked + label,
+.property-tabs:not(:has(:checked)) label:first-of-type {
+  border-bottom-color: #ff5945;
+}
+.property-tabs input:focus-visible + label {
+  outline: 2px solid #ff5945;
+  outline-offset: 4px;
+}
+.properties:has(#kind-appartment:checked) .property-card:not([data-kind="appartment"]),
+.properties:has(#kind-vila:checked) .property-card:not([data-kind="vila"]),
+.properties:has(#kind-land:checked) .property-card:not([data-kind="land"]) {
+  display: none;
+}
+
+/* Testimonials: arrows and quotes tagged with data-slide show only for their slide. */
+.testimonial:has(#testimonial-1:checked) [data-slide="2"],
+.testimonial:has(#testimonial-2:checked) [data-slide="1"] {
+  display: none;
+}
+.testimonial-arrow {
+  cursor: pointer;
+}
+.testimonial:has(> .container > input:focus-visible) .testimonial-arrow {
+  outline: 2px solid #ff5945;
+  outline-offset: 3px;
+}
+.testimonial blockquote {
+  animation: testimonial-quote-in 0.5s ease;
+}
+@keyframes testimonial-quote-in {
+  from {
+    opacity: 0;
+  }
+}
+.testimonial-card {
+  z-index: 1;
+  transform: translate(-18px, 18px);
+  transition:
+    transform 0.8s cubic-bezier(0.65, 0, 0.35, 1),
+    z-index 0s 0.4s;
+}
+.testimonial-card:after {
+  opacity: 1;
+}
+.testimonial:has(#testimonial-1:checked) .testimonial-card:nth-child(1),
+.testimonial:has(#testimonial-2:checked) .testimonial-card:nth-child(2) {
+  z-index: 2;
+  transform: none;
+}
+.testimonial:has(#testimonial-1:checked) .testimonial-card:nth-child(1):after,
+.testimonial:has(#testimonial-2:checked) .testimonial-card:nth-child(2):after {
+  opacity: 0;
+}
+
+/* Contact photos swap places every 4 seconds. */
+.contact-visual {
+  cursor: default;
+}
+.contact-photo {
+  animation: contact-photo-swap 8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.contact-photo-front {
+  animation-delay: -4s;
+}
+@keyframes contact-photo-swap {
+  0%,
+  40%,
+  100% {
+    left: 6%;
+    top: 6.5%;
+    width: 46%;
+    height: 60%;
+    z-index: 1;
+  }
+  50%,
+  90% {
+    left: 26%;
+    top: 28.5%;
+    width: 72%;
+    height: 70%;
+    z-index: 2;
+  }
+}
+
+/* Form results: the API redirects back to #<form>-done or #<form>-error. */
+.form-flash {
+  display: none;
+  scroll-margin-block: 40vh;
+}
+.form-flash:target {
+  display: inline;
+}
+
+/* Login / sign up switch links */
+.login-switch a {
+  padding: 4px 6px;
+  border-bottom: 2px solid transparent;
+  color: #8a9ca6;
+  font-size: 15px;
+  font-weight: 600;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.login-switch a.active {
+  color: #ff5945;
+  border-color: #ff5945;
+}
+.login-popup.is-signup .login-switch a {
+  color: #fff;
+}
+.login-popup.is-signup .login-switch a:not(.active) {
+  opacity: 0.7;
+}
+.login-popup.is-signup .login-switch a.active {
+  border-color: #fff;
+}
+
+/* Dark mode colours for the label-based controls above */
+html:has(.theme-switch:checked) .property-tabs label {
+  color: #9fb0b7;
+}
+html:has(.theme-switch:checked) .property-tabs label:hover,
+html:has(.theme-switch:checked) .property-tabs input:checked + label {
+  color: #e6eef0;
+}
+html:has(.theme-switch:checked) .house-carousel:has(> input:nth-of-type(1):checked) .slide-dots > label:nth-of-type(1),
+html:has(.theme-switch:checked) .house-carousel:has(> input:nth-of-type(2):checked) .slide-dots > label:nth-of-type(2),
+html:has(.theme-switch:checked) .house-carousel:has(> input:nth-of-type(3):checked) .slide-dots > label:nth-of-type(3) {
+  color: #e6eef0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-left,
+  .reveal-right,
+  .contact-photo,
+  .testimonial blockquote {
+    animation: none;
+  }
+}

@@ -6,16 +6,403 @@
     <meta name="theme-color" content="#0a2023" />
     <meta name="description" content="Reanty real estate homepage" />
     <title>Reanty — Real Estate</title>
-    <script>
-      try {
-        const saved = localStorage.getItem('reanty-theme');
-        const prefersDark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark && !location.pathname.startsWith('/admin')) document.documentElement.classList.add('dark');
-      } catch {}
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./src/interactions.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+    <input type="checkbox" id="theme-switch" class="theme-switch visually-hidden" aria-label="Toggle dark mode" />
+
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="topbar-contact">
+          <a href="mailto:Info@webmail.com">✉ &nbsp;Info@webmail.com</a>
+          <span class="with-location"><i class="location-icon location-icon-accent" aria-hidden="true"></i>547 ns tower St. anglo City, USA</span>
+        </div>
+        <div class="socials">
+          <a href="#contact" aria-label="facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4z"/></svg></a>
+          <a href="#contact" aria-label="twitter"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.52 8.52 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg></a>
+          <a href="#contact" aria-label="instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></a>
+          <a href="#contact" aria-label="youtube"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5z"/></svg></a>
+          <a href="#contact" aria-label="pinterest"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.017 1.5C6.3 1.5 2.1 5.7 2.1 11.3c0 4.1 2.5 7.6 6.1 8.9-.1-.8-.2-2 0-2.9.2-.8 1.3-5.5 1.3-5.5s-.3-.7-.3-1.6c0-1.5.9-2.6 2-2.6.9 0 1.4.7 1.4 1.5 0 .9-.6 2.3-.9 3.5-.3 1.1.5 1.9 1.6 1.9 1.9 0 3.2-2.4 3.2-5.3 0-2.2-1.5-3.8-4.2-3.8-3.1 0-5 2.3-5 4.8 0 .9.3 1.5.7 2 .2.2.2.3.1.6l-.3 1c-.1.3-.3.4-.6.3-1.7-.7-2.5-2.6-2.5-4.7 0-3.5 3-7.7 8.9-7.7 4.8 0 7.9 3.4 7.9 7.1 0 4.8-2.7 8.4-6.6 8.4-1.3 0-2.6-.7-3-1.5l-.8 3.2c-.3 1.1-1.1 2.4-1.7 3.3 1.5.4 3 .7 4.6.7 5.7 0 10.3-4.2 10.3-10.9C22.3 5.7 17.8 1.5 12.017 1.5z"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="#home"><img class="brand-logo" src="./public/logo.png" alt="Reanty." width="198" height="70" /></a>
+        <span id="menu" class="menu-anchor"></span>
+        <a class="menu-toggle menu-open" href="#menu" aria-label="Open menu">☰</a>
+        <a class="menu-toggle menu-close" href="#menu-closed" aria-label="Close menu">✕</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <div class="nav-dropdown">
+            <a href="#home" class="active" aria-haspopup="true">Home</a>
+            <ul class="nav-submenu">
+              <li class="has-submenu">
+                <a href="#market" aria-haspopup="true">Properties<i class="nav-caret nav-caret-side" aria-hidden="true"></i></a>
+                <ul class="nav-submenu nav-submenu-side">
+                  <li><a href="./coming-soon.html">For Sale</a></li>
+                  <li><a href="./coming-soon.html">For Rent</a></li>
+                  <li><a href="./coming-soon.html">Featured Listings</a></li>
+                </ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#services" aria-haspopup="true">Services<i class="nav-caret nav-caret-side" aria-hidden="true"></i></a>
+                <ul class="nav-submenu nav-submenu-side">
+                  <li><a href="./coming-soon.html">Buy a Home</a></li>
+                  <li><a href="./coming-soon.html">Sell a Home</a></li>
+                  <li><a href="./coming-soon.html">Rent a Home</a></li>
+                </ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#feature" aria-haspopup="true">Resources<i class="nav-caret nav-caret-side" aria-hidden="true"></i></a>
+                <ul class="nav-submenu nav-submenu-side">
+                  <li><a href="#feature">Guides</a></li>
+                  <li><a href="#blog">Blog</a></li>
+                  <li><a href="#contact">Contact Us</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <a href="#about">About</a>
+          <a href="#featured-property">Feature</a>
+          <a href="#market">Market</a>
+          <a href="#services">Services</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="nav-actions"><a href="./login.html">Log In</a><a class="btn btn-primary" href="./signup.html">Sign Up</a></div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <h1>Find the best Real Estate on your country .</h1>
+            <p>With over 1 million homes for sale available on the website, Renting can match you with a house.</p>
+            <a href="./coming-soon.html" class="btn btn-primary">Start membership <span aria-hidden="true">›</span></a>
+            <div class="house-carousel">
+              <input type="radio" name="hero-slide" id="hero-slide-1" class="visually-hidden" checked aria-label="House 1" />
+              <input type="radio" name="hero-slide" id="hero-slide-2" class="visually-hidden" aria-label="House 2" />
+              <input type="radio" name="hero-slide" id="hero-slide-3" class="visually-hidden" aria-label="House 3" />
+              <div class="house-step">
+                <span><label for="hero-slide-1"><img src="./public/house-1.png" alt="House 1" /></label></span>
+                <span><label for="hero-slide-2"><img src="./public/house-2.png" alt="House 2" /></label></span>
+                <span><label for="hero-slide-3"><img src="./public/house-3.png" alt="House 3" /></label></span>
+              </div>
+              <div class="slide-dots">
+                <span class="slide-line" aria-hidden="true"><i></i><i></i><i></i></span>
+                <label for="hero-slide-1">1</label>
+                <label for="hero-slide-2">2</label>
+                <label for="hero-slide-3">3</label>
+              </div>
+            </div>
+          </div>
+          <img class="hero-arrow" src="./public/hero-arrow.png" alt="" aria-hidden="true" />
+          <div class="hero-visual">
+            <div class="media-frame hero-image has-media">
+              <img src="./public/house-1.png" alt="Hero property" />
+              <img src="./public/house-2.png" alt="" />
+              <img src="./public/house-3.png" alt="" />
+            </div>
+            <div class="revenue-card">
+              <img class="revenue-icon" src="./public/icon-home-revenue.png" alt="" aria-hidden="true" />
+              <strong>$11,354</strong><strong>$9,941</strong><strong>$14,314</strong>
+              <small>Revenue</small>
+            </div>
+            <a class="how-card" href="https://www.youtube.com/watch?v=ScMzIvxBSi4" target="_blank" rel="noopener">How it works &nbsp; <span aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg></span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section guides" id="feature">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Commercial Real Estate And Office</h2>
+            <p>Work with Renting brokers who help you to get started with smart tools to.</p>
+          </div>
+          <div class="guide-grid">
+            <article class="guide-card"><div class="guide-icon"><img src="./public/icon-buyer.png" alt="" aria-hidden="true" /></div><h3>Buyer Guides</h3><p>Nurture valuable leads into customers, and turn one time.</p></article>
+            <article class="guide-card"><div class="guide-icon"><img src="./public/icon-renter.png" alt="" aria-hidden="true" /></div><h3>Renter Guides</h3><p>Build brand awareness on the top social media networks.</p></article>
+            <article class="guide-card"><div class="guide-icon"><img src="./public/icon-seller.png" alt="" aria-hidden="true" /></div><h3>Seller Guides</h3><p>Get professionally-written content that attracts qualified.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section about" id="about">
+        <div class="container split-grid">
+          <div class="about-visual reveal-left">
+            <div class="about-photo about-photo-back"><img src="./public/dream-living-1.png" alt="" loading="lazy" aria-hidden="true" /></div>
+            <div class="about-photo about-photo-front"><img src="./public/dream-living-2.png" alt="Dream living spaces" loading="lazy" /></div>
+            <div class="rating-badge"><b aria-hidden="true"><svg class="rating-star" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M12 2.2 14.9 9h7.1l-5.7 4.3 2.2 7-6.5-4.5L5.5 20.3l2.2-7L2 9h7.1z"/></svg></b><small>Five Star<br />Rating</small></div>
+          </div>
+          <div class="split-copy reveal-right">
+            <h2>Dream Living Spaces Setting New Build</h2>
+            <p>SeaWire Web is a wireframe kit that has more than 15<br />popular categories and more than 200 screens</p>
+            <div class="feature-list">
+              <div class="feature-item"><span class="feature-icon"><img src="./public/icon-dreamliving-residency.png" alt="" aria-hidden="true" /></span><div><h3>The perfect Rsidencye</h3><p>Take a deep dive and browse origin<br />neighborhood photos.</p></div></div>
+              <div class="feature-item"><span class="feature-icon"><img src="./public/icon-dreamliving-global.png" alt="" aria-hidden="true" /></span><div><h3>Global Arhitect Experts</h3><p>Take a deep dive and browse origin<br />neighborhood photos.</p></div></div>
+              <div class="feature-item"><span class="feature-icon"><img src="./public/icon-dreamliving-built-in.png" alt="" aria-hidden="true" /></span><div><h3>Built-in a storage capable</h3><p>Take a deep dive and browse origin<br />neighborhood photos.</p></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section today">
+        <div class="container split-grid today-grid">
+          <div class="split-copy">
+            <span class="eyebrow"><img class="eyebrow-icon" src="./public/icon-abouthome.png" alt="" aria-hidden="true" /> About home</span>
+            <h2>Today Sells Properties</h2>
+            <p>SeaWire Web is a wireframe kit that has more than 15 popular categories and more than 200 screens</p>
+            <ul class="today-list">
+              <li>Live Music concert at Newyork</li>
+              <li>Our best boat Tour is just for you</li>
+              <li>Live Music concert at Newyork</li>
+              <li>Our best boat Tour is just for you</li>
+              <li>Live Music concert at Newyork</li>
+            </ul>
+            <div class="house-carousel">
+              <input type="radio" name="today-slide" id="today-slide-1" class="visually-hidden" checked aria-label="House 1" />
+              <input type="radio" name="today-slide" id="today-slide-2" class="visually-hidden" aria-label="House 2" />
+              <input type="radio" name="today-slide" id="today-slide-3" class="visually-hidden" aria-label="House 3" />
+              <div class="house-step">
+                <span><label for="today-slide-1"><img src="./public/house-1.png" alt="House 1" loading="lazy" /></label></span>
+                <span><label for="today-slide-2"><img src="./public/house-2.png" alt="House 2" loading="lazy" /></label></span>
+                <span><label for="today-slide-3"><img src="./public/house-3.png" alt="House 3" loading="lazy" /></label></span>
+              </div>
+              <div class="slide-dots">
+                <span class="slide-line" aria-hidden="true"><i></i><i></i><i></i></span>
+                <label for="today-slide-1">1</label>
+                <label for="today-slide-2">2</label>
+                <label for="today-slide-3">3</label>
+              </div>
+            </div>
+          </div>
+          <div class="today-mosaic">
+            <div class="media-frame has-media"><img src="./public/house-1.png" alt="Property gallery 1" loading="lazy" /></div>
+            <div class="media-frame has-media"><img src="./public/house-2.png" alt="Property gallery 2" loading="lazy" /></div>
+            <div class="media-frame has-media"><img src="./public/house-3.png" alt="Property gallery 3" loading="lazy" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section services" id="services">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Services provide for you</h2>
+            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration.</p>
+          </div>
+          <div class="service-grid">
+            <article class="service-card"><div class="service-icon"><img src="./public/icon-service-bedrooms.png" alt="" aria-hidden="true" /></div><h3>Bed Rooms</h3><p>Desktop publishing software like aldus page maker including</p><a href="./coming-soon.html">Learn more <span class="service-arrow" aria-hidden="true"></span></a></article>
+            <article class="service-card"><div class="service-icon"><img src="./public/icon-service-swimmingpool.png" alt="" aria-hidden="true" /></div><h3>Swimming pool</h3><p>React creative agency amet, consec tetur adipiscing elit.</p><a href="./coming-soon.html">Learn more <span class="service-arrow" aria-hidden="true"></span></a></article>
+            <article class="service-card"><div class="service-icon"><img src="./public/icon-service-copywritingcontent.png" alt="" aria-hidden="true" /></div><h3>Copywriting content</h3><p>The standard chunk of used since the 1500s is reproduced</p><a href="./coming-soon.html">Learn more <span class="service-arrow" aria-hidden="true"></span></a></article>
+            <article class="service-card"><div class="service-icon"><img src="./public/icon-service-smarthome.png" alt="" aria-hidden="true" /></div><h3>Smart Home</h3><p>The standard chunk of used since the 1500s is reproduced</p><a href="./coming-soon.html">Learn more <span class="service-arrow" aria-hidden="true"></span></a></article>
+            <article class="service-card"><div class="service-icon"><img src="./public/icon-service-libararyarea.png" alt="" aria-hidden="true" /></div><h3>Libarary area</h3><p>Desktop publishing software like aldus page maker including</p><a href="./coming-soon.html">Learn more <span class="service-arrow" aria-hidden="true"></span></a></article>
+            <article class="service-card"><div class="service-icon"><img src="./public/icon-service-responsiveduity.png" alt="" aria-hidden="true" /></div><h3>Responsive Duity</h3><p>React creative agency amet, consec tetur adipiscing elit.</p><a href="./coming-soon.html">Learn more <span class="service-arrow" aria-hidden="true"></span></a></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section properties" id="market">
+        <div class="container">
+          <div class="property-heading" id="featured-property">
+            <div>
+              <h2>Featured Property</h2>
+              <p>Find your suitable house here and stay safe and relaxe with pleasure</p>
+            </div>
+            <div class="property-tabs" role="radiogroup" aria-label="Property category">
+              <input type="radio" name="property-kind" id="kind-appartment" class="visually-hidden" /><label for="kind-appartment">Appartment</label>
+              <input type="radio" name="property-kind" id="kind-vila" class="visually-hidden" /><label for="kind-vila">Vila</label>
+              <input type="radio" name="property-kind" id="kind-land" class="visually-hidden" /><label for="kind-land">Land</label>
+            </div>
+          </div>
+          <div class="property-grid">
+            <article class="property-card" data-kind="appartment"><div class="media-frame has-media"><img src="./public/house-1.png" alt="The Stokes Appartment" loading="lazy" /></div><div class="property-info"><h3>The Stokes Appartment</h3><small class="with-location"><img class="location-icon" src="./public/icon-location.png" alt="" aria-hidden="true" />Cleveland, United States</small><div class="property-bottom"><strong>$11,354</strong><a href="#contact" aria-label="Enquire about The Stokes Appartment">→</a></div></div></article>
+            <article class="property-card" data-kind="vila"><div class="media-frame has-media"><img src="./public/house-2.png" alt="The Stokes Appartment" loading="lazy" /></div><div class="property-info"><h3>The Stokes Appartment</h3><small class="with-location"><img class="location-icon" src="./public/icon-location.png" alt="" aria-hidden="true" />Cleveland, United States</small><div class="property-bottom"><strong>$9,941</strong><a href="#contact" aria-label="Enquire about The Stokes Appartment">→</a></div></div></article>
+            <article class="property-card" data-kind="land"><div class="media-frame has-media"><img src="./public/house-3.png" alt="The Stokes Appartment" loading="lazy" /></div><div class="property-info"><h3>The Stokes Appartment</h3><small class="with-location"><img class="location-icon" src="./public/icon-location.png" alt="" aria-hidden="true" />Cleveland, United States</small><div class="property-bottom"><strong>$14,314</strong><a href="#contact" aria-label="Enquire about The Stokes Appartment">→</a></div></div></article>
+          </div>
+          <a class="btn btn-outline" href="./coming-soon.html">Explore Property</a>
+        </div>
+      </section>
+
+      <section class="showcase">
+        <div class="media-frame showcase-image has-media"><img src="./public/feature-property-showcase.png" alt="Featured property showcase" loading="lazy" /></div>
+        <div class="container showcase-content">
+          <div class="showcase-card">
+            <div class="showcase-thumb">
+              <div class="media-frame has-media"><img src="./public/house-4.png" alt="Property thumbnail" loading="lazy" /></div>
+              <img class="showcase-thumb-icon" src="./public/icon-service-cost.png" alt="" aria-hidden="true" />
+            </div>
+            <div>
+              <strong>$4,000</strong>
+              <small class="showcase-address">242 Metric way</small>
+              <small class="showcase-specs">
+                <span><img src="./public/icon-service-bedrooms.png" alt="" aria-hidden="true" />2</span>
+                <span><img src="./public/icon-service-swimmingpool.png" alt="" aria-hidden="true" />2</span>
+                <span><img src="./public/icon-service-copywritingcontent.png" alt="" aria-hidden="true" />500sqf</span>
+              </small>
+            </div>
+          </div>
+          <div class="unit-badge">UNIT NO.<strong>9A</strong></div>
+        </div>
+      </section>
+
+      <section class="section testimonial">
+        <div class="container">
+          <div class="section-heading">
+            <h2>What our customers are saying</h2>
+            <p>We make sure you have a fine distance with the sickness. We make you never lose hope.</p>
+          </div>
+          <input type="radio" name="testimonial" id="testimonial-1" class="visually-hidden" checked aria-label="Testimonial 1" />
+          <input type="radio" name="testimonial" id="testimonial-2" class="visually-hidden" aria-label="Testimonial 2" />
+          <div class="testimonial-grid">
+            <label for="testimonial-2" class="testimonial-arrow testimonial-arrow-prev" data-slide="1" aria-label="Previous testimonial"><span aria-hidden="true"></span></label>
+            <label for="testimonial-1" class="testimonial-arrow testimonial-arrow-prev" data-slide="2" aria-label="Previous testimonial"><span aria-hidden="true"></span></label>
+            <div class="testimonial-visual">
+              <div class="testimonial-stack">
+                <div class="media-frame has-media testimonial-card"><img src="./public/customer-1.png" alt="Customer portrait" loading="lazy" /></div>
+                <div class="media-frame has-media testimonial-card"><img src="./public/customer-2.png" alt="Customer portrait" loading="lazy" /></div>
+              </div>
+            </div>
+            <blockquote data-slide="1">
+              <img class="quote-mark" src="./public/icon-quote.png" alt="" aria-hidden="true" />
+              <p>We make sure you have a fine distance with the sickness. We make you never lose hope. We make sure you have with the sickness.</p>
+              <div class="stars" role="img" aria-label="5 out of 5 stars"><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /></div>
+              <strong>Yunus Seyhan</strong>
+              <small>Postgraduate Student</small>
+            </blockquote>
+            <blockquote data-slide="2">
+              <img class="quote-mark" src="./public/icon-quote.png" alt="" aria-hidden="true" />
+              <p>Reanty helped me find a bright apartment close to my office in just two weeks. The team was honest, patient and always ready to answer my questions.</p>
+              <div class="stars" role="img" aria-label="5 out of 5 stars"><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /><img src="./public/icon-star.png" alt="" aria-hidden="true" /></div>
+              <strong>Daniel Mensah</strong>
+              <small>Software Engineer</small>
+            </blockquote>
+            <label for="testimonial-2" class="testimonial-arrow testimonial-arrow-next" data-slide="1" aria-label="Next testimonial"><span aria-hidden="true"></span></label>
+            <label for="testimonial-1" class="testimonial-arrow testimonial-arrow-next" data-slide="2" aria-label="Next testimonial"><span aria-hidden="true"></span></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="section projects">
+        <div class="container">
+          <div class="section-heading"><h2>We build more projects successful</h2></div>
+          <div class="project-grid">
+            <article class="project-card has-media"><div class="media-frame has-media"><img src="./public/SanFranciscoCalifornia.png" alt="San Francisco, California" loading="lazy" /></div><div><h3>San Francisco, California</h3><a href="./coming-soon.html">See more &nbsp; ›</a></div></article>
+            <article class="project-card has-media"><div class="media-frame has-media"><img src="./public/WashingtonDC.png" alt="Washington DC" loading="lazy" /></div><div><h3>Washington DC</h3><a href="./coming-soon.html">See more &nbsp; ›</a></div></article>
+            <article class="project-card has-media"><div class="media-frame has-media"><img src="./public/Chicago.png" alt="Chicago" loading="lazy" /></div><div><h3>Chicago</h3><a href="./coming-soon.html">See more &nbsp; ›</a></div></article>
+          </div>
+          <form class="subscribe-form" id="subscribe" action="./api/newsletter" method="post">
+            <input type="hidden" name="return_to" value="subscribe" />
+            <label for="subscribe-email"><img class="subscribe-icon" src="./public/icon-mail.png" alt="Email" /></label>
+            <input id="subscribe-email" type="email" name="email" placeholder="Enter your email here" required />
+            <button class="btn btn-primary" type="submit">Subscribe</button>
+            <span class="form-status" role="status"><span id="subscribe-done" class="form-flash">Subscribed successfully.</span><span id="subscribe-error" class="form-flash">Please enter a valid email address.</span></span>
+          </form>
+        </div>
+      </section>
+
+      <section class="section blog" id="blog">
+        <div class="container">
+          <div class="section-heading">
+            <h2>From our blog</h2>
+            <p>Find your suitable house here and stay safe and relaxe with pleasure</p>
+          </div>
+          <div class="blog-grid">
+            <article class="blog-card"><div class="media-frame has-media"><img src="./public/image-How%20to%20rent%20a%20home%20very%20easily.png" alt="How to rent a home very easily?" loading="lazy" /></div><div class="blog-body"><h3>How to rent a home very easily?</h3><span class="accent blog-category"><img class="blog-category-icon" src="./public/icon-save.png" alt="" />Rentals</span><p>How to rent a home very easily in this pandemic situation. You can rent house through using our platfrom...</p><div class="blog-meta"><span class="blog-meta-item"><img class="blog-meta-icon" src="./public/icon-calendar.png" alt="" />3 years ago</span><span class="blog-meta-item"><img class="blog-meta-icon" src="./public/icon-person.png" alt="" />By <b>Mike Hesson</b></span></div></div></article>
+            <article class="blog-card"><div class="media-frame has-media"><img src="./public/image-How%20to%20rent%20a%20home%20very%20easily.png" alt="How to rent a home very easily?" loading="lazy" /></div><div class="blog-body"><h3>How to rent a home very easily?</h3><span class="accent blog-category"><img class="blog-category-icon" src="./public/icon-save.png" alt="" />Rentals</span><p>How to rent a home very easily in this pandemic situation. You can rent house through using our platfrom...</p><div class="blog-meta"><span class="blog-meta-item"><img class="blog-meta-icon" src="./public/icon-calendar.png" alt="" />3 years ago</span><span class="blog-meta-item"><img class="blog-meta-icon" src="./public/icon-person.png" alt="" />By <b>Mike Hesson</b></span></div></div></article>
+            <article class="blog-card"><div class="media-frame has-media"><img src="./public/image-How%20to%20rent%20a%20home%20very%20easily.png" alt="How to rent a home very easily?" loading="lazy" /></div><div class="blog-body"><h3>How to rent a home very easily?</h3><span class="accent blog-category"><img class="blog-category-icon" src="./public/icon-save.png" alt="" />Rentals</span><p>How to rent a home very easily in this pandemic situation. You can rent house through using our platfrom...</p><div class="blog-meta"><span class="blog-meta-item"><img class="blog-meta-icon" src="./public/icon-calendar.png" alt="" />3 years ago</span><span class="blog-meta-item"><img class="blog-meta-icon" src="./public/icon-person.png" alt="" />By <b>Mike Hesson</b></span></div></div></article>
+          </div>
+          <a class="btn btn-outline" href="./coming-soon.html">Read All</a>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Contact with us</span>
+            <h2>Looking For To Buy A Property?</h2>
+          </div>
+          <div class="contact-grid">
+            <div class="contact-copy">
+              <p>Browse our property listing and find your best and suitable home or house for sale, rent and buying. It’s so easy and fast.</p>
+              <ul>
+                <li>Archit ecto beatae vitae dicta sunt</li>
+                <li>Largest global RealEstate market</li>
+                <li>Nor again is there anyone</li>
+              </ul>
+              <div class="contact-visual">
+                <span class="contact-deco contact-deco-square" aria-hidden="true"></span>
+                <span class="contact-deco contact-deco-dark" aria-hidden="true"></span>
+                <div class="contact-photo contact-photo-back"><img src="./public/image-contact-1.png" alt="" loading="lazy" aria-hidden="true" /></div>
+                <div class="contact-photo contact-photo-front"><img src="./public/image-contact-2.png" alt="Contact property" loading="lazy" /></div>
+              </div>
+            </div>
+            <form class="contact-form" action="./api/contact" method="post">
+              <input type="hidden" name="return_to" value="contact-form" />
+              <h3>Contact Us</h3>
+              <label>Name<input name="name" type="text" placeholder="Enter your name" required minlength="2" /></label>
+              <label>Email<input name="email" type="email" placeholder="Enter your email" required /></label>
+              <label>Message<textarea name="message" placeholder="Enter your message" required minlength="5"></textarea></label>
+              <button class="btn btn-primary" type="submit">Send</button>
+              <p class="form-status" role="status"><span id="contact-form-done" class="form-flash">Message sent successfully.</span><span id="contact-form-error" class="form-flash">Please check your name, email and message.</span></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="#home"><img class="brand-logo" src="./public/logo-light.png" alt="Reanty." width="198" height="70" /></a>
+          <p>With over 1 million homes for sale available on the website.</p>
+          <div class="footer-socials">
+            <a href="#contact" aria-label="linkedin"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+            <a href="#contact" aria-label="facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4z"/></svg></a>
+            <a href="#contact" aria-label="twitter"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.52 8.52 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3>Company</h3>
+          <a href="./coming-soon.html">About</a><a href="./coming-soon.html">Careers</a><a href="./coming-soon.html">Mobile</a><a href="./coming-soon.html">Blog</a><a href="./coming-soon.html">How we work?</a>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <a href="./coming-soon.html">Help/FAQ</a><a href="./coming-soon.html">Press</a><a href="./coming-soon.html">Affiliates</a><a href="./coming-soon.html">Propert owners</a><a href="./coming-soon.html">Partners</a>
+        </div>
+        <div>
+          <h3>More</h3>
+          <a href="./coming-soon.html">Land fees</a><a href="./coming-soon.html">Property</a><a href="./coming-soon.html">Law tips</a><a href="./coming-soon.html">Nadges</a><a href="./coming-soon.html">Privacy</a>
+        </div>
+        <div>
+          <h3>Head Office</h3>
+          <p>Xilliams Corner Wine © 2017. 1112 A Market St # Ste B22, Charlottesville, CA 45565</p>
+          <h3 class="newsletter-title">News letter</h3>
+          <form class="footer-newsletter" action="./api/newsletter" method="post">
+            <input type="hidden" name="return_to" value="footer-newsletter" />
+            <input type="email" name="email" placeholder="Enter your email address" aria-label="Email address" required />
+            <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5" width="19" height="14" rx="1"/><path d="m3 6 9 7 9-7"/></g></svg></button>
+            <span class="form-status" role="status"><span id="footer-newsletter-done" class="form-flash">Subscribed successfully.</span><span id="footer-newsletter-error" class="form-flash">Please enter a valid email address.</span></span>
+          </form>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <a href="mailto:Info@webmail.com">Info@webmail.com</a>
+        <a href="tel:1234567890">(123) 456-7890</a>
+        <small>© 2021 Aeyman Megha All rights reserved.</small>
+      </div>
+    </footer>
+
+    <label for="theme-switch" class="theme-toggle" aria-hidden="true">
+      <svg class="theme-icon-moon" viewBox="0 0 24 24" focusable="false"><path fill="currentColor" d="M20.7 14.3A8.5 8.5 0 0 1 9.7 3.3a8.5 8.5 0 1 0 11 11z"/></svg>
+      <svg class="theme-icon-sun" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+    </label>
+    <a class="back-to-top" href="#home" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 4.5 4.5 12l1.4 1.4L11 8.3V20h2V8.3l5.1 5.1L19.5 12z"/></svg>
+    </a>
   </body>
 </html>
