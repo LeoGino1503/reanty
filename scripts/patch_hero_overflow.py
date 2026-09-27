@@ -1,6 +1,6 @@
 from pathlib import Path
 
-path = Path(r"z:\Downloads\reanty-local-source(1)\reanty-local\src\styles.css")
+path = Path(__file__).resolve().parent.parent / "src" / "styles.css"
 css = path.read_text(encoding="utf-8")
 
 replacements = [

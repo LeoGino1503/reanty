@@ -1,6 +1,6 @@
 from pathlib import Path
 
-path = Path(r"z:\Downloads\reanty-local-source(1)\reanty-local\src\styles.css")
+path = Path(__file__).resolve().parent.parent / "src" / "styles.css"
 css = path.read_text(encoding="utf-8")
 old = (
     ".house-step span{position:relative;background:#f8fafb;color:#33464a;font-size:6px;"

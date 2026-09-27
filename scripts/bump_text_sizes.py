@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 
-path = Path(r"z:\Downloads\reanty-local-source(1)\reanty-local\src\styles.css")
+path = Path(__file__).resolve().parent.parent / "src" / "styles.css"
 css = path.read_text(encoding="utf-8")
 
 # Split admin CSS so we only bump public site text
